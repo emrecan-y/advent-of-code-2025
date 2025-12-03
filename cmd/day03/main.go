@@ -20,24 +20,17 @@ func main() {
 }
 
 func partOne() {
-	sum := int64(0)
+	var sum atomic.Int64
+	var wg sync.WaitGroup
 
 	for _, line := range dayInput {
-		fistBattery := '0'
-		secondBattery := '0'
-		for i, char := range line {
-			if char > fistBattery && i < len(line)-1 {
-				fistBattery = char
-				secondBattery = '0'
-			} else if char > secondBattery {
-				secondBattery = char
-			}
-		}
-		fmt.Println(string(fistBattery), string(secondBattery))
-		num, _ := strconv.ParseInt(string(fistBattery)+string(secondBattery), 10, 64)
-		sum += num
+		wg.Go(func() {
+			highestJoltage, _ := strconv.ParseInt(findHighestJoltage(line, 2), 10, 64)
+			sum.Add(highestJoltage)
+		})
 	}
-	fmt.Printf("PartOne: %d\n", sum)
+	wg.Wait()
+	fmt.Printf("PartOne: %d\n", sum.Load())
 }
 
 func partTwo() {
