@@ -34,3 +34,10 @@ func ReadDayInput(dayNumber uint) []string {
 	}
 	return output
 }
+
+// ReplaceAtIndex swaps the rune at `index` in the string with `r`.
+func ReplaceAtIndex(in string, r rune, index int) string {
+	out := []rune(in)
+	out[index] = r
+	return string(out)
+}
